@@ -1,5 +1,5 @@
 
-<h1><center>Unsupervised Anomaly Sensor Detection - IMS Bearing NASA Acoustics and Vibration Database </center></h1>
+<h1><center>Anomaly Sensor Detection - IMS Bearing NASA Acoustics and Vibration Database </center></h1>
 
 ## PyCaret vs Custom BiLSTM (Bidirectional LSTM)
 
