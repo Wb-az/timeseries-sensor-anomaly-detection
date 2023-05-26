@@ -120,7 +120,7 @@ width="400"/>B
 Figure 5. Anomalies distribution detected on the test dataset. The experimental setup is outlined in Table 2. A. Exp-01, B.Exp-02, C. Exp-03, D.Exp-04.
 </p>
 
-## Nonparametric Statistical Models Comparison -
+## Nonparametric Statistical Models Comparison - Friedman-Conover
 
 ## Training results
 
@@ -141,6 +141,9 @@ Figure 5. Anomalies distribution detected on the test dataset. The experimental 
 * Non-parametri test - Friedman-chisquare pvalue = 9.21e-114. Therefore the H<sub>0</sub> is rejected.
 * Posthoc- Friedman-Conover pairwise comparison
 * Critical Difference Diagram
+
+<img height="250" src="plots/posthoc_test_models.png.png" width="350" title="train_post"/>
+<img height="100" src="plots/critical_dif_test_models.png.png" width="400" title="train_post"/>
 
 
 # Conclusion
