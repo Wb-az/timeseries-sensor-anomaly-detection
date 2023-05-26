@@ -5,6 +5,19 @@
 
 ## Introduction
 
+This project will use four unsupervised anomaly detection models from Pycaret to detect anomalies in sensor-bearing vibration signals. These models are Decision Tree and Support Vector Machine. In addition, a customed LSTM model will be built using the PyTorch Framework to autoencode and decode the signal input. The data comprises three vibrational sensor readings from the NASA Acoustics and Vibration Database. The datasets contained text files with 1-second vibration signal snapshots (20,480 data points) recorded at 5 and 10 minutes intervals at a sampling rate of 20 kHz. 
+
+•	Pycaret is a high-performance, open-source, low-code library for ML modelling. It provides highly-efficient CPU/GPU implementations of ML models for cluster analysis, classification, time series and anomaly detection. Snap ML accelerates ML algorithms through system awareness and offers novel ML algorithms with best-in-class accuracy. Pycaret also automates ML workflows and aims to democratise ML. For more information, please visit [Pycaret](https://pycaret.org/)[1]. 
+•	PyTorch is a machine learning framework used for computer vision and natural language processing applications, initially developed by Meta AI and now part of the Linux Foundation umbrella. For more information, please visit [PyTorch](https://pytorch.org/).
+
+Choi et al. conducted a study of the impact of deep Learning reported on anomaly detection in time-series data [6]. Several works on these datasets have been reported to prevent early anomalies successfully using deep learning architectures [2][3][5]. These works followed a semi-supervised approach to detecting failure. However, there is no strong rationale for selecting a specific train data subset. In addition, the models are not challenged against unseen data (another dataset from the three groups. Other studies have produced successful results but only used a tiny fraction of the data [4].
+
+
+In this work, we will use deep learning architectures, a BiLSTM, to predict anomalies in an unsupervised fashion. The Autoencoder decoder will be trained in all datasets without separating the anomalies portion and evaluated on test dataset 3. In addition, Cluster, Histogram, iForest, KNN, MCD and SVM anomaly detection models will be trained and assessed on the same datasets. Further, the performance of the models will be compared [6] using the nonparametric statistics Friedman test and the posthoc test Friedman-Conover.
+
+The aim of this study is to determine whether PyCaret offers a similar or better performance than Artificial Neural Networks but at low code, therefore, optimising resources.
+
+
 
 ## Data
 The data was source from [kaggle](https://www.kaggle.com/datasets/vinayak123tyagi/bearing-dataset) and comprises three datsets of vibrational sensor readings from the NASA Acoustics and Vibration Database. The datasets contained text files with 1-second vibration signal snapshots (20,480 data points) recorded at 5 and 10 minute intervals at a sampling rate of 20 kHz.
@@ -34,6 +47,26 @@ All experiments were run for 200 epochs, learning rate of 2 e-4 and batch size o
 |4|bilstm|huber\_loss|adamw|
 
 ## Results
+
+**Training**
+
+* From the nonparametric statistical Friedman test, we found a significant difference in detecting anomalies among the models with 95 % certainty.
+
+* For the training dataset, there is no significant difference in the performance of each of the
+Pycaret models and experiments Exp-01 and Exp-02. We can infer with 95 % certainty that the Anomalies detected by each model occurred very close to the other.
+*  __Exp-03__ was the most sensitive to anomalies, followed by Exp-04. Both experiments were significantly different to all PyCaret models and experiments Exp-01 and Exp-02. Experiments Exp-03 and Exp-04 were optimised with AdamW.
+* Exp-03 ranked the highest of all models, followed by Exp-04.
+
+
+* From the nonparametric test, we can reject the null hypothesis that the performance of all models at detecting anomalies is not significantly different with 95% certainty
+
+* For the critical difference diagram and Friedman-Conover comparison, we can see that the iforest, Exp-01 and Exp-03 perform at the same level with 95 % certainty. Similarly, experiments Exp-02, MCD and SVM show no significant difference in detecting anomalies.
+
+* Experiment Exp-01 and Exp-03 models used the mean absolute error as the objective to optimise.
+* The ranking of the models shows that the best models to detect earlier anomalies on the test dataset are exp1, exp3 and iforest.
+* Experiment Exp-04 performed differently from all models in the middle of the performance.
+
+
 
 ### PyCaret
 #### Train dataset - Dataset 2 (avg_df2)
@@ -87,5 +120,54 @@ width="400"/>B
 Figure 5. Anomalies distribution detected on the test dataset. The experimental setup is outlined in Table 2. A. Exp-01, B.Exp-02, C. Exp-03, D.Exp-04.
 </p>
 
+## Nonparametric Statistical Models Comparison -
+
+## Training results
+
+* Friedman-chisquare non parametric statistical test - pvalue = 4.80e-48. Therefore the H<sub>0</sub> is rejected.
+* Posthoc- Friedman-Conover pairwise comparison
+*  Critical Difference Diagram
+
+<img height="300" src="plots/posthoc_train_models.png.png" width="400" title="train_post"/>
+
+<img height="100" src="plots/critical_dif_train_models.png.png" width="400" title="train_post"/>
+
+<br>
+</br>
+
+
+## Test results
+
+* Non-parametri test - Friedman-chisquare pvalue = 9.21e-114. Therefore the H<sub>0</sub> is rejected.
+* Posthoc- Friedman-Conover pairwise comparison
+* Critical Difference Diagram
+
+
+# Conclusion
+In summary, Exp-03 consistently obtained the best performance in both datasets. The test dataset was almost six times larger than the train set. It also presented spikes at the beginning and middle of the test. We can observe that the data's size and quality impact the model's choice to detect failures. Models Histogram, Cluster, and KNN were excluded in the test comparison since they accounted for more than 50% of the data when testing the models with the unseen data.
+
+However, the iforest model took the lead in detecting anomalies together with Exp-01 and Exp-03 with no significant difference in their performance. It showed to be more robust to changes in the sample size and the sample itself. Conversely, Exp-04, the top performer on the training dataset, ranked the middle performance on the test dataset. 
+
+We can conclude that the PyCaret Anomalies models selected in this work and the Bilstm (Bidirectional LSTM) Autoencoders can detect failures on the bearing sensors' signal at the same performance level. Whether these models can detect failures days or weeks in advance in unseen data requires further testing and optimisation in unseen data. For the purpose of work PyCaret is a realiable choice to unservised anomaly detection in time-series data.
+
+
 ## References
-[PyCaret](https://pycaret.gitbook.io/docs/)
+
+[1] [PyCaret](https://pycaret.gitbook.io/docs/)
+<br>
+</br>
+[2] https://towardsdatascience.com/lstm-autoencoder-for-anomaly-detection-e1f4f2ee7ccf
+<br>
+</br>
+[3] https://sabtainahmadml.medium.com/condition-monitoring-through-diagnosis-of-anomalies-lstm-based-unsupervised-ml-approach-5f0565735dff
+<br>
+</br>
+[4] Zhang, R.; Peng, Z.; Wu, L.; Yao, B.; Guan, Y. Fault Diagnosis from Raw Sensor Data Using Deep Neural Networks Considering Temporal Coherence. Sensors 2017, 17, 549. https://doi.org/10.3390/s1703054
+<br>
+</br>
+[5] Goldstein, M. and Uchida, S. (2016) ‘A comparative evaluation of unsupervised anomaly detection algorithms for multivariate data’, PLOS ONE, 11(4). doi:10.1371/journal.pone.0152173. 
+<br>
+</br>
+[6] K. Choi, J. Yi, C. Park and S. Yoon, "Deep Learning for Anomaly Detection in Time-Series Data: Review, Analysis, and Guidelines," in IEEE Access, vol. 9, pp. 120043-120065, 2021, doi: 10.1109/ACCESS.2021.3107975.
+
+
