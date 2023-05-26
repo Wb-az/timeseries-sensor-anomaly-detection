@@ -73,7 +73,7 @@ def friedman_conover_comparison(df, var_name='model', value_name='anomaly', plot
         print(' ')
         print('Post-hoc Conover-Friedman multiple comparison is applied')
 
-        significance = sp.posthoc_conover_friedman(df)
+        significance = sp.posthoc_conover_friedman(df, p_adjust='holm')
         sp.sign_plot(significance, **heatmap_args)
         save_plot(outdir=outdir, plot_name=f'posthoc_{plot_name}.png')
         plt.show()
