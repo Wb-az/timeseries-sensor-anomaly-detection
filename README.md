@@ -26,6 +26,8 @@ The data was source from [kaggle](https://www.kaggle.com/datasets/vinayak123tyag
 
 ### Experimental setup PyCaret Models
 
+__Table 1__ Anomaly Models - PyCaret
+
 |ID|Name|Reference|
 |---|---|---|
 |cluster|Clustering-Based Local Outlier|pyod\.models\.cblof\.CBLOF|
@@ -39,6 +41,8 @@ The data was source from [kaggle](https://www.kaggle.com/datasets/vinayak123tyag
 
 All experiments were run for 200 epochs, learning rate of 2 e-4 and batch size of 32. The architecture use was a configurable Bidirectional-LSTM. For this work only one layer of size 32 was used. The encoder-decoder can be costumized to multiple bilstm layers.
 
+
+__Table 2__ BILSTM Experiomental Setup Models
 |Exp|Model|Loss|Optim|
 |---|---|---|---|
 |1|bilstm|mae\_loss|adam|
@@ -47,6 +51,21 @@ All experiments were run for 200 epochs, learning rate of 2 e-4 and batch size o
 |4|bilstm|huber\_loss|adamw|
 
 ## Results
+
+__Table 3__: Anomalies detected by model in the training and test datasets
+
+| Model     | Anomalies - </br>training dataset | Anomalies- </br>Test dataset |
+|-----------|:---------------------------------:|:----------------------------:|
+| Cluster   |                50                 |              -               |
+| Histogram |                50                 |              -               |
+| iforest   |                50                 |             187              |
+| KNN       |                50                 |              -               |
+| MCD       |                50                 |              78              |
+| SVM       |                50                 |              95              |
+| Exp-01    |                41                 |             197              |
+| Exp-02    |                52                 |              75              |
+| Exp-03    |                109                |             196              |
+| Exp-04    |                74                 |             141              |
 
 **Training**
 
@@ -121,6 +140,21 @@ Figure 5. Anomalies distribution detected on the test dataset. The experimental 
 </p>
 
 ## Nonparametric Statistical Models Comparison - Friedman-Conover
+
+__Table 4__: Models performance ranking  for the training and test datasets.
+
+| Model     | Training Ranks | Test Ranks |
+|-----------|:--------------:|:----------:|
+| Exp-01    |    0.541556    |  0.576059  |
+| Exp-02    |    0.547154    |  0.566414  |
+| Exp-03    |    0.576118    |  0.576059  |
+| Exp-04    |    0.547154    |  0.575980  |
+| Cluster   |    0.546138    |     -      |
+| Histogram |    0.546138    |     -      |
+| iForest   |    0.546138    |  0.571632  |
+| KNN       |    0.546138    |     -      |
+| MCD       |    0.546138    |  0.566651  |
+| SVM       |    0.541565    |  0.567995  |
 
 ## Training results
 
