@@ -147,11 +147,11 @@ __Table 4__: Models performance ranking  for the training and test datasets.
 |-----------|:--------------:|:----------:|
 | Exp-01    |    0.541556    |  0.576059  |
 | Exp-02    |    0.547154    |  0.566414  |
-| Exp-03    |    0.576118    |  0.576059  |
-| Exp-04    |    0.547154    |  0.575980  |
+| Exp-03    |    0.576118    |  0.575980  |
+| Exp-04    |    0.547154    |  0.571632  |
 | Cluster   |    0.546138    |     -      |
 | Histogram |    0.546138    |     -      |
-| iForest   |    0.546138    |  0.571632  |
+| iForest   |    0.546138    |  0.575269  |
 | KNN       |    0.546138    |     -      |
 | MCD       |    0.546138    |  0.566651  |
 | SVM       |    0.541565    |  0.567995  |
@@ -183,9 +183,9 @@ __Table 4__: Models performance ranking  for the training and test datasets.
 # Conclusion
 In summary, Exp-03 consistently obtained the best performance in both datasets. The test dataset was almost six times larger than the train set. It also presented spikes at the beginning and middle of the test. We can observe that the data's size and quality impact the model's choice to detect failures. Models Histogram, Cluster, and KNN were excluded in the test comparison since they accounted for more than 50% of the data when testing the models with the unseen data.
 
-However, the iforest model took the lead in detecting anomalies together with Exp-01 and Exp-03 with no significant difference in their performance. It showed to be more robust to changes in the sample size and the sample itself. Conversely, Exp-04, the top performer on the training dataset, ranked the middle performance on the test dataset. 
+For the test dataset, the __iforest__ model detected the sensor's failure __21:20__ h before the breakdown, and __Exp-01__ and __Exp-03__ detected the failure __1:30__ h earlier than the iforest (22:30 h). The iforest model, Exp-01 and Exp-03, exhibited __no significant difference__ at earlier detection of bearing failures. The iforest model was also more robust to changes in the sample size and the sample itself. Conversely, Exp-04, the top performer on the training dataset, ranked the middle performance on the test dataset. 
 
-We can conclude that the PyCaret Anomalies models selected in this work and the Bilstm (Bidirectional LSTM) Autoencoders can detect failures on the bearing sensors' signal at the same performance level. Whether these models can detect failures days or weeks in advance in unseen data requires further testing and optimisation in unseen data. For the purpose of work PyCaret is a realiable choice to unservised anomaly detection in time-series data.
+We can conclude that the PyCaret Anomalies models selected in this work and the Bilstm (Bidirectional LSTM) Autoencoders can detect failures on the bearing sensors' signal at the same performance level. Whether these models can detect failures days or weeks in advance in unseen data requires further testing and optimisation in unseen data. PyCaret is a reliable choice for unsupervised anomaly detection in time-series data.
 
 
 ## References
