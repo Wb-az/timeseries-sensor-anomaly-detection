@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from sklearn import metrics
 import scipy.stats as ss
 import matplotlib.pyplot as plt
 import scikit_posthocs as sp
@@ -99,3 +100,22 @@ def plot_critical_difference(posthoc=None, ranks_df=None, plot_name=None, outdir
     save_plot(outdir=outdir, plot_name=f'critical_dif_{plot_name}.png')
 
     return plt.show()
+
+
+def compare_clusters_metrics(df_raw, df_cluster):
+    """
+    :param df_raw: raw data dataframe
+    :param df_cluster: dataframe with cluster labels
+    :return: data frame with the cluster metrics scores
+    """
+    model_scores = {}
+    for col in df_cluster.columns:
+        sil = metrics.silhouette_score(df_raw, df_cluster[col])
+        cal_har = metrics.calinski_harabasz_score(df_raw, df_cluster[col])
+        dav_boul = metrics.davies_bouldin_score(df_raw, df_cluster[col])
+        model_scores[col] = [sil, cal_har, dav_boul]
+
+    cluster_metrics = pd.DataFrame.from_dict(model_scores).T
+    cluster_metrics.columns = ['silhoutte', 'calinski_harabasz', 'davies_bouldin']
+
+    return  cluster_metrics
