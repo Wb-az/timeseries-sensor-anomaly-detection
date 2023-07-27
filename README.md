@@ -20,9 +20,9 @@ The aim of this study is to determine whether PyCaret offers a similar or better
 
 
 ## Data
-The data was source from [kaggle](https://www.kaggle.com/datasets/vinayak123tyagi/bearing-dataset) and comprises three datsets of vibrational sensor readings from the NASA Acoustics and Vibration Database. The datasets contained text files with 1-second vibration signal snapshots (20,480 data points) recorded at 5 and 10 minute intervals at a sampling rate of 20 kHz.
+The data were sourced from [kaggle](https://www.kaggle.com/datasets/vinayak123tyagi/bearing-dataset) and comprises three datasets of vibrational sensor readings from the NASA Acoustics and Vibration Database. The datasets contained text files with 1-second vibration signal snapshots (20,480 data points) recorded at 5 and 10-minute intervals at a sampling rate of 20 kHz.
 
-## Methodos
+## Methods
 
 ### Experimental setup PyCaret Models
 
@@ -39,7 +39,7 @@ __Table 1__ Anomaly Models - PyCaret
 
 ### Experimental Setup for BiLSTM
 
-All experiments were run for 200 epochs, learning rate of 2 e-4 and batch size of 32. The architecture use was a configurable Bidirectional-LSTM. For this work only one layer of size 32 was used. The encoder-decoder can be costumized to multiple bilstm layers.
+All experiments were run for 50 epochs, learning rate of 2 e-4 and a batch size of 32. The architecture used was a configurable Bidirectional-LSTM. For this work, only one layer with 32 hidden units and a dropout of 0.1 was used. The encoder-decoder can be customised to multiple BiLSTM layers.
 
 
 __Table 2__ BILSTM Experiomental Setup Models
@@ -50,9 +50,22 @@ __Table 2__ BILSTM Experiomental Setup Models
 |3|bilstm|mae\_loss|adamw|
 |4|bilstm|huber\_loss|adamw|
 
+The results from each model will be further analysed using cluster metrics three metrics, the silhouette coefficient, Calinski-Harabaz and Davies-Boulding indexes.
+
+1. **Silhouette Score** is the mean Silhouette Coefficient for all clusters, which is calculated using the mean intra-cluster distance and the mean nearest-cluster distance. This score is between -1 and 1; the higher the score, the more well-defined and distinct the clusters are.
+
+1. **Calinski-Harabaz Index** is calculated using the between-cluster and within-cluster dispersion to measure the distinctiveness between groups. Like the Silhouette Score, the higher the score, the more well-defined the clusters are. This score has no bound, meaning no ‘acceptable’ or ‘good’ value exists.
+
+3. **Davies-Bouldin Index** is the average similarity of each cluster with its most similar cluster. Unlike the previous two metrics, this score measures the similarity of the clusters, meaning that the lower the score, the better the separation between the clusters. Zero is the lowest possible score. Values closer to zero indicate a better partition. The usage of centroid distance limits the distance metric to Euclidean space.
+
+The disadvantage of the three metrics is that they generally score higher for convex clusters than other concepts of clusters. Therefore further compare their performance with **non-parametric statistics**.
+
+
 ## Results
 
-__Table 3__: Anomalies detected by model in the training and test datasets
+Tables 3 and Figures 2-5 show the anomalies detected for each of the selected PyCaret and BiLST models for the training dataset and the independent test dataset.
+
+__Table 3__: Anomalies detected by model for the training and test datasets.
 
 | Model     | Anomalies - </br>training dataset | Anomalies- </br>Test dataset |
 |-----------|:---------------------------------:|:----------------------------:|
@@ -62,49 +75,67 @@ __Table 3__: Anomalies detected by model in the training and test datasets
 | KNN       |                50                 |              -               |
 | MCD       |                50                 |              78              |
 | SVM       |                50                 |              95              |
-| Exp-01    |                41                 |             197              |
-| Exp-02    |                52                 |              75              |
-| Exp-03    |                109                |             196              |
-| Exp-04    |                74                 |             141              |
+| Exp-01    |                99                 |             190              |
+| Exp-02    |                98                 |             191              |
+| Exp-03    |                99                 |             190              |
+| Exp-04    |                104                |             191              |
 
-**Training**
 
-* From the nonparametric statistical Friedman test, we found a significant difference in detecting anomalies among the models with 95 % certainty.
 
-* For the training dataset, there is no significant difference in the performance of each of the
-Pycaret models and experiments Exp-01 and Exp-02. We can infer with 95 % certainty that the Anomalies detected by each model occurred very close to the other.
-*  __Exp-03__ was the most sensitive to anomalies, followed by Exp-04. Both experiments were significantly different to all PyCaret models and experiments Exp-01 and Exp-02. Experiments Exp-03 and Exp-04 were optimised with AdamW.
-* Exp-03 ranked the highest of all models, followed by Exp-04.
+### Training
+
+
+*Cluster Metrics*
+
+The models that obtained the highest Calinski-Harabasz and Davies-Bouldin indexes were SVM, MCV and Histogram. These models, in addition to IForest, showed the highest Silhouette scores (Table 4).
+
+*Non-parametric Comparison*
+
+* From the nonparametric statistical Conover-Friedman test, we found a significant difference in detecting anomalies among the models with 95 \% certainty.
+
+* For the training dataset, there is no significant difference in the performance of each Pycaret model. However, all BiLSTM experiments differed significantly from all PyCaret models (Table 6, Figure 6). 
+* All BiLSTM experiments were not significantly different from each other, as shown in the Friedman-Conover and critical difference diagrams. 
+* Exp-04 ranked the highest scored but was not significantly different to __Exp-02__ to __Exp-04__. The anomaly could have been detected with 22:00 lead time with Exp-02 and Exp-04, while for the PyCaret models, the Clustering-Based Local outlier **cluster** could have detected the anomalies 14:40 hr in advance.
+
+
+### Test
+
+*Cluster Metrics*
+
+MCD and SVM obtained the highest Silhouette scores and Calinski-Harabasz and Davies-Bouldin indexes (Table 5).
 
 
 * From the nonparametric test, we can reject the null hypothesis that the performance of all models at detecting anomalies is not significantly different with 95% certainty
 
-* For the critical difference diagram and Friedman-Conover comparison, we can see that the iforest, Exp-01 and Exp-03 perform at the same level with 95 % certainty. Similarly, experiments Exp-02, MCD and SVM show no significant difference in detecting anomalies.
+* The ranking of the models shows that the best model and the Conover-Friedman test and critical difference diagram showed no statistical difference amongst experiments Exp-01 to Exp-04 and iForest with 95% certainty (Table 6, Figure 7).
+* Similarly, MCD and SVM showed no significant difference in detecting anomalies but significantly differed from all other models.
 
-* Experiment Exp-01 and Exp-03 models used the mean absolute error as the objective to optimise.
-* The ranking of the models shows that the best models to detect earlier anomalies on the test dataset are exp1, exp3 and iforest.
-* Experiment Exp-04 performed differently from all models in the middle of the performance.
-
+* Experiments Exp-02 and Exp-04 minimised which objective function to minimised was the Huber-Loss ranked the highest of all models.
+* The Conover-Friedman test and critical difference diagram showed no statistical difference amongst experiments Exp-01 to Exp-04 and iForest.  
+* Any of the BiLSTM models could have detected the anomaly within a 27:00 hr lead time, specifically Exp-03 within 27:20:00, while Iforest detected the anomalies within a lead time of 25:30:00.
 
 
 ### PyCaret
-#### Train dataset - Dataset 2 (avg_df2)
-
 <p align="center">
-  <img height="1200" src="plots/scatter_anomalies.png" width="600" alt="Anomaly distribution on train datset"/>
-</p>
-<p align="center">
-Figure 2. 
+  Train dataset - Dataset 2 (avg_df2)
 </p>
 
-#### Test dataset - Dataset 3 (avg_df3)
+<p align="center">
+  <img height="1200" src="plots/scatter_anomalies.png" width="600" alt="Anomaly distribution on train dataset"/>
+</p>
+<p align="center">
+Figure 2. Anomalies detected by the PyCaret models on the training dataset.
+</p>
 
+<p align="center">
+Test dataset - Dataset 3 (avg_df3)
+</p>
 <p align="center">
   <img alt="Fig" height="500" src="plots/merged_test_anomaly_prediction.png" width="600"/> 
 </p>
 
 <p align="center">
-  Figure 3. 
+  Figure 3. Anomalies detected by the PyCaret models on the test dataset.
 </p>
   
 <br>
@@ -113,7 +144,9 @@ Figure 2.
 
 ### BiLSTM - PyTorch
 
-### Train dataset - Dataset 2 (avg_df2)
+<p align="center">  
+  Train dataset - Dataset 2 (avg_df2)
+</p>
 
 <p align="center">
 <img src="plots/merged_bilstm_val_pred_anom_exp1.png" width="400" height="150" alt="train_anomaly exp1"/>A <img height="150" src="plots/merged_bilstm_val_pred_anom_exp2.png" title="train anomaly exp2" 
@@ -122,71 +155,111 @@ width="400"/>B
 </p>
 
 <p align="center">
-  Figure 4. Anomalies distribution detected on the train dataset. The experimental setup is outlined in Table 2. A. Exp-01, B.Exp-02, C. Exp-03, D.Exp-04
+  Figure 4. Anomalies distribution detected on the training dataset. The experimental setup is outlined in Table 2. A. Exp-01, B.Exp-02, C. Exp-03, D.Exp-04
 </p>
 
 
 <br>
 </br>
 
-### Test dataset - Dataset 3 (avg_df3)
+<p align="center">
+  Test dataset - Dataset 3 (avg_df3)
+</p>
 <p align="center">
 <img src="plots/merged_test_bilstm_anom_exp1.png" width="400" height="150" alt="test_anomaly exp1"/>A <img src="plots/merged_test_bilstm_anom_exp2.png" width="400" height="150" alt="test_anomaly exp2"/>B
 <img src="plots/merged_test_bilstm_anom_exp3.png" width="400" height="150" alt="test_anomaly exp3"/>C <img src="plots/merged_test_bilstm_anom_exp4.png" width="400" height="150" alt="test_anomaly exp4"/>D
 </p>
-</p>
+
 <p align="center">
 Figure 5. Anomalies distribution detected on the test dataset. The experimental setup is outlined in Table 2. A. Exp-01, B.Exp-02, C. Exp-03, D.Exp-04.
 </p>
 
+## Cluster Metrics
+
+__Table 4__: Cluster metrics on the training dataset.
+|index|silhoutte|calinski\_harabasz|davies\_bouldin|
+|---|---|---|---|
+|cluster|0\.7762|646\.9312|0\.8175|
+|histogram|0\.8124|1001\.4351|0\.6754|
+|iforest|0\.8124|992\.9829|0\.6791|
+|knn|0\.8017|897\.689|0\.7167|
+|mcd|0\.8124|1004\.5345|0\.6739|
+|svm|0\.814|1011\.3661|0\.6723|
+|exp1|0\.7442|879\.5458|0\.7615|
+|exp2|0\.747|892\.5695|0\.7562|
+|exp3|0\.7442|879\.5458|0\.7615|
+|exp4|0\.7386|875\.7697|0\.764|
+
+<br>
+</br
+
+__Table 5__: Cluster metrics on the test dataset.
+|index|silhoutte|calinski\_harabasz|davies\_bouldin|
+|---|---|---|---|
+|iforest|0\.923|7629\.4839|0\.7218|
+|mcd|0\.9557|15873\.0144|0\.3554|
+|svm|0\.9533|16564\.1182|0\.3939|
+|exp1|0\.9263|8549\.185|0\.6857|
+|exp2|0\.9256|8389\.7269|0\.692|
+|exp3|0\.9267|8656\.1093|0\.6818|
+|exp4|0\.9256|8433\.0381|0\.6902|
+
+
 ## Nonparametric Statistical Models Comparison - Friedman-Conover
 
-__Table 4__: Models performance ranking  for the training and test datasets.
+__Table 6__: Models performance ranking for the training and test datasets.
 
 | Model     | Training Ranks | Test Ranks |
 |-----------|:--------------:|:----------:|
-| Exp-01    |    0.541556    |  0.576059  |
-| Exp-02    |    0.547154    |  0.566414  |
-| Exp-03    |    0.576118    |  0.575980  |
-| Exp-04    |    0.547154    |  0.571632  |
-| Cluster   |    0.546138    |     -      |
-| Histogram |    0.546138    |     -      |
-| iForest   |    0.546138    |  0.575269  |
-| KNN       |    0.546138    |     -      |
-| MCD       |    0.546138    |  0.566651  |
-| SVM       |    0.541565    |  0.567995  |
+| Exp-01    |    0.5647      |  0.5738    |
+| Exp-02    |    0.5642      |  0.5739    |
+| Exp-03    |    0.5647      |  0.5738    |
+| Exp-04    |    0.5673      |  0.5739    |
+| Cluster   |    0.5398      |     -      |
+| Histogram |    0.5398      |     -      |
+| iForest   |    0.5398      |  0.5735    |
+| KNN       |    0.5398      |     -      |
+| MCD       |    0.5398      |  0.5663    |
+| SVM       |    0.5398     |   0.5649    |
 
 ## Training results
 
-* Friedman-chisquare non parametric statistical test - pvalue = 4.80e-48. Therefore the H<sub>0</sub> is rejected.
+* Friedman-Chisquare nonparametric statistical test - p-value = 8.85e-75. Therefore the H<sub>0</sub> is rejected.
 * Posthoc- Friedman-Conover pairwise comparison
 *  Critical Difference Diagram
-
+<p align="center">
 <img height="300" src="plots/posthoc_train_models.png.png" width="400" title="train_post"/>
 
 <img height="100" src="plots/critical_dif_train_models.png.png" width="400" title="train_post"/>
-
+<p align="center">
+Figure 6.  Figure 6. Conover-Friedman posthoc comparison training results and critical distance on the unseen test data by model.
+</p>
 <br>
 </br>
 
 
 ## Test results
 
-* Non-parametri test - Friedman-chisquare pvalue = 9.21e-114. Therefore the H<sub>0</sub> is rejected.
+* Non-parametri test - Friedman-chisquare pvalue = 6.51e-19. Therefore the H<sub>0</sub> is rejected.
 * Posthoc- Friedman-Conover pairwise comparison
 * Critical Difference Diagram
 
+
+<p align="center">
 <img height="250" src="plots/posthoc_test_models.png.png" width="350" title="train_post"/>
 <img height="100" src="plots/critical_dif_test_models.png.png" width="400" title="train_post"/>
+  
+
+Figure 6. Conover-Friedman posthoc comparison test results and critical distance on the unseen test data by model.
+</p>
 
 
 # Conclusion
-In summary, Exp-03 consistently obtained the best performance in both datasets. The test dataset was almost six times larger than the train set. It also presented spikes at the beginning and middle of the test. We can observe that the data's size and quality impact the model's choice to detect failures. Models Histogram, Cluster, and KNN were excluded in the test comparison since they accounted for more than 50% of the data when testing the models with the unseen data.
+In summary, Exp-04 consistently obtained the best performance in both datasets. The test dataset was almost six times larger than the train set. It also presented spikes at the beginning and middle of the test. We can observe that the data's size and quality impact the model's choice to detect failures. Models Histogram, Cluster, and KNN were excluded in the test comparison since they accounted for more than 50% of the test dataset which is inaccurate as per the data visualisations. These models showed to be less robust for unseen data.
 
-For the test dataset, the __iforest__ model detected the sensor's failure __21:20__ h before the breakdown, and __Exp-01__ and __Exp-03__ detected the failure __1:30__ h earlier than the iforest (22:30 h). The iforest model, Exp-01 and Exp-03, exhibited __no significant difference__ at earlier detection of bearing failures. The iforest model was also more robust to changes in the sample size and the sample itself. Conversely, Exp-04, the top performer on the training dataset, ranked the middle performance on the test dataset. 
+Conversely, the __IForest__ model took the lead in detecting anomalies together with Exp-01 and Exp-04 with no significant difference in their performance for the unseen test dataset. It showed to be __more robust__ to changes independently of dataset size and unknown contamination. 
 
-We can conclude that the PyCaret Anomalies models selected in this work and the Bilstm (Bidirectional LSTM) Autoencoders can detect failures on the bearing sensors' signal at the same performance level. Whether these models can detect failures days or weeks in advance in unseen data requires further testing and optimisation in unseen data. PyCaret is a reliable choice for unsupervised anomaly detection in time-series data.
-
+We can conclude that the PyCaret Anomalies models selected in this work and the Bilstm (Bidirectional LSTM) Artificial Neural Networks can detect failures on the bearing sensors' signals at the same performance level. Whether these models can detect failures days or weeks in advance in other unseen data requires further testing and optimisation.
 
 ## References
 
