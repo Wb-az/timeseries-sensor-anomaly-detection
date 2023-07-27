@@ -161,8 +161,7 @@ def plot_loss(stats_log, model, size=(6, 3), figs_dir=plots_dir):
     """
 
     fig = plt.figure(figsize=size)
-    plt.plot(stats_log.train_loss, label='train')
-    plt.plot(stats_log.val_loss, label='val')
+    plt.plot(stats_log.train_loss, label='train', color='blue')
 
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
