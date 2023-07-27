@@ -228,9 +228,9 @@ __Table 6__: Models performance ranking for the training and test datasets.
 * Posthoc- Friedman-Conover pairwise comparison
 *  Critical Difference Diagram
 <p align="center">
-<img height="300" src="plots/posthoc_train_models.png.png" width="400" title="train_post"/>
+<img height="300" src="plots/posthoc_train_models.png" width="400" title="train_post"/>
 
-<img height="100" src="plots/critical_dif_train_models.png.png" width="400" title="train_post"/>
+<img height="100" src="plots/critical_dif_train_models.png" width="400" title="train_post"/>
 <p align="center">
 Figure 6.  Figure 6. Conover-Friedman posthoc comparison training results and critical distance on the unseen test data by model.
 </p>
@@ -246,8 +246,8 @@ Figure 6.  Figure 6. Conover-Friedman posthoc comparison training results and cr
 
 
 <p align="center">
-<img height="250" src="plots/posthoc_test_models.png.png" width="350" title="train_post"/>
-<img height="100" src="plots/critical_dif_test_models.png.png" width="400" title="train_post"/>
+<img height="250" src="plots/posthoc_test_models.png" width="350" title="train_post"/>
+<img height="100" src="plots/critical_dif_test_models.png" width="400" title="train_post"/>
   
 
 Figure 6. Conover-Friedman posthoc comparison test results and critical distance on the unseen test data by model.
