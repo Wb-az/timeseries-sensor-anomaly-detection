@@ -76,7 +76,7 @@ def friedman_conover_comparison(df, var_name='model', value_name='anomaly', plot
 
         significance = sp.posthoc_conover_friedman(df, p_adjust='holm')
         sp.sign_plot(significance, **heatmap_args)
-        save_plot(outdir=outdir, plot_name=f'posthoc_{plot_name}.png')
+        save_plot(outdir=outdir, plot_name=f'posthoc_{plot_name}')
         plt.show()
         print(' ')
         plot_critical_difference(significance, avg_rank, plot_name=plot_name)
@@ -97,7 +97,7 @@ def plot_critical_difference(posthoc=None, ranks_df=None, plot_name=None, outdir
     plt.figure(figsize=(10, 2), dpi=100)
     plt.title('Critical difference diagram of average score ranks')
     sp.critical_difference_diagram(ranks_df, posthoc)
-    save_plot(outdir=outdir, plot_name=f'critical_dif_{plot_name}.png')
+    save_plot(outdir=outdir, plot_name=f'critical_dif_{plot_name}')
 
     return plt.show()
 
