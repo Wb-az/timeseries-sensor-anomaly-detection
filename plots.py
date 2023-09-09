@@ -57,13 +57,13 @@ def save_plot(outdir=plots_dir, plot_name=None):
 def plot_raw_data(df=None, sample_rate=20480, suptitle=None, xlabel='timestamp'):
     """
     :param df: dataframe dataset
-    :param sample_rate: int sanmpling rate (Hz)-frequency
-    :param suptitle: str a string with the plot title
+    :param sample_rate: int sampling rate (Hz)-frequency
+    :param subtitle: str a string with the plot title
     :param xlabel: str axis s label
     :return: display plot
     """
 
-    fig, axes = plt.subplots(df.shape, 1, sharex=True, sharey=True, figsize=(12, 15))
+    fig, axes = plt.subplots(df.shape[1], 1, sharex=True, sharey=True, figsize=(12, 15))
     plt.subplots_adjust(hspace=0.5)
     for i, c in enumerate(df.columns):
         rolling_avg = df[c].rolling(sample_rate).mean()
