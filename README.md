@@ -107,10 +107,10 @@ MCD and SVM obtained the highest Silhouette scores and Calinski-Harabasz and Dav
 
 * From the nonparametric test, we can reject the null hypothesis that the performance of all models at detecting anomalies is not significantly different with 95% certainty
 
-* The ranking of the models shows that the best model and the Conover-Friedman test and critical difference diagram showed no statistical difference amongst experiments Exp-01 to Exp-04 and iForest with 95% certainty (Table 6, Figure 7).
+* The ranking of the models shows that the best model. The Conover-Friedman test and critical difference diagram showed no statistical difference amongst experiments Exp-01 to Exp-04 and iForest with 95% certainty (Table 6, Figure 7).
 * Similarly, MCD and SVM showed no significant difference in detecting anomalies but significantly differed from all other models.
 
-* Experiments Exp-02 and Exp-04 minimised which objective function to minimised was the Huber-Loss ranked the highest of all models.
+* Experiments Exp-02 and Exp-04, which minimised the Huber-Loss, ranked the highest of all models.
 * The Conover-Friedman test and critical difference diagram showed no statistical difference amongst experiments Exp-01 to Exp-04 and iForest.  
 * Any of the BiLSTM models could have detected the anomaly within a 27:00 hr lead time, specifically Exp-03 within 27:20:00, while Iforest detected the anomalies within a lead time of 25:30:00.
 
